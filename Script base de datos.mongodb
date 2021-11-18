@@ -1,0 +1,261 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+//Grupo WINIT
+
+
+const database = 'ciclo4-proyecto';
+const collection = 'users';
+
+// The current database to use.
+use(database);
+
+//borrar
+db.getCollection(collection).drop();
+
+//crear colección user
+db.createCollection(collection, {
+  validator: {
+    $jsonSchema: {
+      required: ['documentId', 'firstName', 'lastName', 'email', 'role', 'state'],
+      properties: {
+        documentId: {
+          bsonType: 'string',
+          description: 'Documento de identificación, requerido'
+        },
+        firstName: {
+          bsonType: 'string',
+          description: 'Nombre, requerido'
+        },
+        lastName: {
+          bsonType: 'string',
+          description: 'Apellido, requerido'
+        },
+        email: {
+          bsonType: 'string',
+          pattern: '^[a-z0-9+_.-]+@[a-z0-9.-]+$',
+          description: 'Correo electrónico, requerido'
+        },
+        role: {
+          enum: ["Administrador", "Lider", "Estudiante"],
+          description: 'rol, requerido'
+        },
+        state: {
+          enum: ["Pendiente", "Autorizado", "No autorizado"],
+          description: 'Estado, requerido'
+        },
+        password: {
+          bsonType: 'string'
+        }
+      }
+    }
+  }
+});
+
+//Crear indices únicos  para que no se repitan documentos de identificación ni los email.
+db.getCollection(collection).createIndex({ email: 1 }, { unique: true });
+db.getCollection(collection).createIndex({ documentId: 1 }, { unique: true });
+
+
+const users = [
+   {
+        "documentId": "1025342546",
+        "firstName": "Carlos",
+        "lastName": "Zapata",
+        "email": "carloszapata@gmail.com",
+        "role": "Administrador",
+        "state": "Pendiente",
+        "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K" 
+    },
+  {
+        "documentId": "1025342547",
+        "firstName": "Pedro",
+        "lastName": "Ramirez",
+        "email": "pedroramirez@gmail.com",
+        "role": "Lider",
+        "state": "Autorizado",
+        "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDTerr" 
+    },
+  {
+        "documentId": "10678902345",
+        "firstName": "abc",
+        "lastName": "def",
+        "email": "abcdef@gmail.com",
+        "role": "Estudiante",
+        "state": "No autorizado",
+        "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDTerr" 
+  }
+  
+];
+
+// Insert users
+db.getCollection(collection).insertMany(users);
+
+
+collection = 'projects'
+
+//borrar
+db.getCollection(collection).drop();
+
+// Crear colección de proyectos
+db.createCollection(collection, {
+  validator: {
+    $jsonSchema: {
+      required: ['name', 'generalObjective', 'specificObjectives', 'budget', 'startDate', 'endDate', 'leader_id', 'state'],
+      properties: {
+        name: {
+          bsonType: 'string',
+           description: 'Nombre del proyecto, requerido'
+        },
+        generalObjective: {
+          bsonType: 'string',
+          description: 'Objetivo general, requerido'
+        },
+        specificObjectives: {
+          bsonType: 'array',
+          description: 'Objetivos específicos, requerido'
+        },
+        budget: {
+          bsonType: 'decimal',
+          description: 'Presupuesto, requerido'
+        },
+        startDate: {
+          bsonType: 'date',
+          description: 'Fecha inicio, requerido'
+        },
+        endDate: {
+          bsonType: 'date',
+          description: 'Fecha terminación, requerido'
+        },
+        leader_id: {
+          bsonType: 'objectId',
+          description: 'lider del proyecto, requerido'
+        },
+        state: {
+          enum: ['Activo', 'Inactivo'],
+          description: 'Estado, requerido'
+        },
+        phase: {
+          enum: [null,'Iniciado', 'En desarrollo', 'Terminado'],
+          description: 'fase actual del proyecto'
+        },
+        progress:{
+          bsonType: 'array',
+          required: ['_id','addDate', 'description', 'observations'],
+          properties:{
+            _id: {
+                bsonType: 'objectId'
+
+            },
+            addDate: {
+                bsonType: 'date'
+            },
+            description: {
+               bsonType: 'string'
+            },
+            observations: {
+                bsonType: 'string'
+            }
+          }
+        },
+       
+        enrollments:{
+          bsonType: 'array',
+             required: ['user_id'],
+            properties: {
+                _id: {
+                bsonType: 'objectId'
+                },
+                user_id: {
+                bsonType: 'objectId'
+                },
+                state: {
+                enum: ['Pendiente','Aceptada', 'Rechazada','Cancelada'],
+                description: 'Pendiente de aprobación, Aceptada, Rechazada, Cancelada despues de estar inscrito'
+                },
+                enrollmentDate: {
+                bsonType: 'date'
+                },
+                egressDate: {
+                bsonType: 'date'
+                }
+            }
+
+
+        }
+
+
+      }
+    }
+  }
+});
+
+//crear índice único para el nombre del proyecto para que no se repita.
+db.getCollection(collection).createIndex({ name: 1 }, { unique: true });
+
+
+const projects = [
+  {
+    "name": "proyecto 1",
+    "generalObjective": "Lorem ipsum dolor sit amet",
+    "specificObjectives": [ "Lorem ipsum dolor sit amet 1", "Lorem ipsum dolor sit amet 2"],
+    "budget": Decimal128('35000000'),
+    "startDate": new Date(),
+    "endDate": new Date(new Date().getTime() + 60*24*60*60000),
+    "leader_id": db.users.findOne({email: 'pedroramirez@gmail.com'})._id,
+    "state": "Inactivo",
+    "phase": null,
+    "progress":[
+        {   "_id": ObjectId(),
+            "addDate": new Date(),
+            "description": "Lorem ipsum dolor sit amet",
+            "observations": "Lorem ipsum dolor sit amet"
+        }       
+
+   ],
+    "enrollments":[
+        {
+            "_id": ObjectId(),
+            "user_id": db.users.findOne({email: 'abcdef@gmail.com'})._id,
+            "state": "Pendiente",
+            "enrollmentDate": new Date(),
+            "egressDate": null
+        }
+    ]
+               
+
+  },
+  {
+    "name": "proyecto 2",
+    "generalObjective": "Lorem ipsum dolor sit amet",
+    "specificObjectives": [ "Lorem ipsum dolor sit amet 1", "Lorem ipsum dolor sit amet 2"],
+    "budget": Decimal128('42000000'),
+    "startDate": new Date(),
+    "endDate": new Date(new Date().getTime() + 60*24*60*60000),
+    "leader_id": db.users.findOne({email: 'pedroramirez@gmail.com'})._id,
+    "state": "Activo",
+    "phase": "Iniciado",
+    "progress":[
+        {
+            "_id": ObjectId(),
+            "addDate": new Date(),
+            "description": "Lorem ipsum dolor sit amet",
+            "observations": "Lorem ipsum dolor sit amet"
+        }       
+
+   ],
+    "enrollments":[
+        {
+            "_id": ObjectId(),
+            "user_id": db.users.findOne({email: 'abcdef@gmail.com'})._id,
+            "state": "Pendiente",
+            "enrollmentDate": new Date(),
+            "egressDate": null
+        }
+    ]
+               
+
+  }
+  ]
+
+  // Insert users
+db.getCollection(collection).insertMany(projects);
