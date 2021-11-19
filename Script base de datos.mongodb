@@ -55,7 +55,7 @@ db.createCollection(collection, {
 db.getCollection(collection).createIndex({ email: 1 }, { unique: true });
 db.getCollection(collection).createIndex({ documentId: 1 }, { unique: true });
 
-
+//definir registros de usuarios
 const users = [
    {
         "documentId": "1025342546",
@@ -87,13 +87,13 @@ const users = [
   
 ];
 
-// Insert users
+// Insertar usuarios
 db.getCollection(collection).insertMany(users);
 
 
 collection = 'projects'
 
-//borrar
+//borrar la colección de proyectos
 db.getCollection(collection).drop();
 
 // Crear colección de proyectos
@@ -193,6 +193,7 @@ db.createCollection(collection, {
 db.getCollection(collection).createIndex({ name: 1 }, { unique: true });
 
 
+//crear registros de proyectos de ejemplo
 const projects = [
   {
     "name": "proyecto 1",
@@ -247,7 +248,7 @@ const projects = [
         {
             "_id": ObjectId(),
             "user_id": db.users.findOne({email: 'abcdef@gmail.com'})._id,
-            "state": "Pendiente",
+            "state": "Aceptada",
             "enrollmentDate": new Date(),
             "egressDate": null
         }
@@ -257,5 +258,5 @@ const projects = [
   }
   ]
 
-  // Insert users
+  // Insertar proyectos
 db.getCollection(collection).insertMany(projects);
