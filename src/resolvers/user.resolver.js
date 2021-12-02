@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // constants
-import { USER_STATUS, ROLES } from '../constants/user.constants.js';
+import { USER_STATE, ROLES } from '../constants/user.constants.js';
 
 // models
 import Users from "../models/users.model.js";
@@ -13,7 +13,7 @@ const allUsers = async (parent, args, { user, errorMessage }) => {
   if(!user) {
     throw new Error(errorMessage);
   }
-  if(user.role !== ROLES.ADMIN) {
+  if(user.role !== ROLES.ADMINISTRADOR) {
     throw new Error('Access denied');
   }
   return await Users.find();
@@ -29,8 +29,7 @@ const user = async (parent, args, { user, errorMessage }) => {
 const register = async (parent, args) => {
   const user = new Users({
     ...args.input,
-    status: USER_STATUS.PENDING,
-    fullName: `${args.input.name} ${args.input.lastName}`,
+    state: USER_STATE.PENDIENTE,
     password: await bcrypt.hash(args.input.password, 12),
   });
   return user.save();
@@ -73,8 +72,5 @@ export default {
   userMutations: {
     register,
     login,
-  },
-  User: {
-    enrollments,
   }
 }

@@ -2,17 +2,12 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const usersSchema = new Schema({
-  email: {
+  documentId: {
     type: String,
     unique: true,
     required: true,
   },
-  documentId: {
-    type: Number,
-    unique: true,
-    required: true,
-  },
-  name: {
+  firstName: {
     type: String,
     required: true,
   },
@@ -20,18 +15,19 @@ const usersSchema = new Schema({
     type: String,
     required: true,
   },
-  fullName: {
+  email: {
     type: String,
+    unique: true,
     required: true,
   },
   role: {
     type: String,
-    enum: ['ADMIN', 'LEADER', 'STUDENT'],
+    enum: ['Administrador', 'Lider', 'Estudiante'],
     required: true,
   },
-  status: {
+  state: {
     type: String,
-    enum: ['PENDING', 'AUTHORIZED', 'UNAUTHORIZED'],
+    enum: ['Pendiente', 'Autorizado', 'No autorizado'],
     required: true,
   },
   password: {
