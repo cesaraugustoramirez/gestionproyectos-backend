@@ -7,15 +7,15 @@ const roles = async () => {
   return [
     {
       code: 'ADMIN',
-      value: 'Administrador',
+      value: 'ADMINISTRADOR',
     },
     {
       code: 'LEADER',
-      value: 'Líder',
+      value: 'LIDER',
     },
     {
       code: 'STUDENT',
-      value: 'Estudiante',
+      value: 'ESTUDIANTE',
     }
   ];
 };

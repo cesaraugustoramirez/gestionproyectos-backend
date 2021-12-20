@@ -22,12 +22,12 @@ const usersSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['Administrador', 'Lider', 'Estudiante'],
+    enum: ['ADMINISTRADOR', 'LIDER', 'ESTUDIANTE'],
     required: true,
   },
   state: {
     type: String,
-    enum: ['Pendiente', 'Autorizado', 'No autorizado'],
+    enum: ['PENDIENTE', 'AUTORIZADO', 'NOAUTORIZADO'],
     required: true,
   },
   password: {

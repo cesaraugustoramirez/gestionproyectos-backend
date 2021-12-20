@@ -1,6 +1,46 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
+
+const enrollmentsSchema = new Schema (
+  {
+    /*_id: {
+      Type: Schema.ObjectId
+      },*/
+      user_id: {
+      Type: Schema.ObjectId
+      },
+      state: {
+      enum: ['PENDIENTE','ACEPTADA', 'RECHAZADA','CANCELADA']
+      },
+      enrollmentDate: {
+      Type: Date
+      },
+      egressDate: {
+      Type: Date
+      }
+}
+);
+
+const progressSchema = new Schema(
+  {
+   /* _id: {
+        Type: Schema.ObjectId
+    },*/
+    addDate: {
+        Type: Date
+    },
+    description: {
+       Type: String
+    },
+    observations: {
+        Type: String
+    }
+}
+
+);
+
+
 const projectsSchema = new Schema({
   name: {
     type: String,
@@ -30,14 +70,18 @@ const projectsSchema = new Schema({
     type: Schema.ObjectId,
     required: true,
   },
-  status: {
+  state: {
     type: String,
-    enum: ['ACTIVE', 'INACTIVE'],
+    enum: ['ACTIVO', 'INACTIVO'],
     required: true,
   },
   phase: {
-    type: String
-  }
+    type: String,
+    enum: [null,'INICIADO', 'ENDESARROLLO', 'TERMINADO'],
+  },
+  progress:[progressSchema],
+  enrollments: [enrollmentsSchema]
+ 
 });
 
 const Projects = new mongoose.model('projects', projectsSchema);

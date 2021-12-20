@@ -1,13 +1,13 @@
 const ROLES = {
-  ADMINISTRADOR: 'Administrador',
-  LIDER: 'Lider',
-  ESTUDIANTE: 'estudiante',
+  ADMINISTRADOR: 'administrador',
+  LIDER: 'LIDER',
+  ESTUDIANTE: 'ESTUDIANTE',
 };
 
 const USER_STATE = {
-  PENDIENTE: 'Pendiente',
-  AUTORIZADO: 'Autorizado',
-  NOAUTORIZADO: 'No autorizado',
+  PENDIENTE: 'PENDIENTE',
+  AUTORIZADO: 'AUTORIZADO',
+  NOAUTORIZADO: 'NOAUTORIZADO',
 };
 
 export {

@@ -1,36 +1,65 @@
-import { gql } from 'apollo-server';
+ import { gql } from 'apollo-server';
 
 const projectType = gql`
   # Project
+  scalar DateTime
+  
   type Project {
     _id: ID!,
     name: String!
     generalObjective: String!
     specificObjectives: [String]!
     budget: Float!
-    startDate: String!
-    endDate: String!
+    startDate: DateTime!
+    endDate: DateTime!
     leader_id: ID!
-    status: ProjectStatus!
+    state: ProjectState!
     phase: Phase
     leader: User!
-    enrollments: [Enrollment]
+    progress: [progress]
+    enrollments: [enrollments]
   }
+
+  type enrollments {
+    _id: ID
+    user_id: ID
+    state: enrollmentState!,
+    enrollmentDate: DateTime!,
+    egressDate: DateTime!
+  }
+
+ type progress  
+    {
+      _id: ID
+      addDate: DateTime!
+      description: String!
+      observations: String!
+    }
+ 
 `;
 
 const enums = gql`
   # Enum for status values
-  enum ProjectStatus {
-    ACTIVE
-    INACTIVE
+  enum ProjectState {
+    ACTIVO
+    INACTIVO
   }
 
   # Enum for phase values
   enum Phase {
-    STARTED
-    IN_PROGRESS
-    ENDED
+    INICIADO
+    ENPROGRESO
+    TERMINADO
   }
+
+  enum enrollmentState
+  {
+    PENDIENTE
+    ACEPTADA
+    RECHAZADA
+    CANCELADA
+  }
+
 `;
 
 const queries = gql`
@@ -41,6 +70,11 @@ const queries = gql`
 
   type Query {
     project(_id: ID): Project
+  }
+
+  type Query {
+    leaderProjects(leader_id: ID): [Project]
+
   }
 `;
 

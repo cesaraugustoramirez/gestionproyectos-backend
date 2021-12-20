@@ -36,11 +36,11 @@ db.createCollection(collection, {
           description: 'Correo electrónico, requerido'
         },
         role: {
-          enum: ["Administrador", "Lider", "Estudiante"],
+          enum: ["ADMINISTRADOR", "LIDER", "ESTUDIANTE"],
           description: 'rol, requerido'
         },
         state: {
-          enum: ["Pendiente", "Autorizado", "No autorizado"],
+          enum: ["PENDIENTE", "AUTORIZADO", "NOAUTORIZADO"],
           description: 'Estado, requerido'
         },
         password: {
@@ -62,8 +62,8 @@ const users = [
         "firstName": "Carlos",
         "lastName": "Zapata",
         "email": "carloszapata@gmail.com",
-        "role": "Administrador",
-        "state": "Pendiente",
+        "role": "LIDER",
+        "state": "PENDIENTE",
         "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K" 
     },
   {
@@ -71,17 +71,17 @@ const users = [
         "firstName": "Pedro",
         "lastName": "Ramirez",
         "email": "pedroramirez@gmail.com",
-        "role": "Lider",
-        "state": "Autorizado",
-        "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDTerr" 
+        "role": "ADMINISTRADOR",
+        "state": "AUTORIZADO",
+        "password": "123" 
     },
   {
         "documentId": "10678902345",
         "firstName": "abc",
         "lastName": "def",
         "email": "abcdef@gmail.com",
-        "role": "Estudiante",
-        "state": "No autorizado",
+        "role": "ESTUDIANTE",
+        "state": "NOAUTORIZADO",
         "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDTerr" 
   }
   
@@ -131,11 +131,11 @@ db.createCollection(collection, {
           description: 'lider del proyecto, requerido'
         },
         state: {
-          enum: ['Activo', 'Inactivo'],
+          enum: ['ACTIVO', 'INACTIVO'],
           description: 'Estado, requerido'
         },
         phase: {
-          enum: [null,'Iniciado', 'En desarrollo', 'Terminado'],
+          enum: [null,'INICIADO', 'ENDESARROLLO', 'TERMINADO'],
           description: 'fase actual del proyecto'
         },
         progress:{
@@ -169,7 +169,7 @@ db.createCollection(collection, {
                 bsonType: 'objectId'
                 },
                 state: {
-                enum: ['Pendiente','Aceptada', 'Rechazada','Cancelada'],
+                enum: ['PENDIENTE','ACEPTADA', 'RECHAZADA','CANCELADA'],
                 description: 'Pendiente de aprobación, Aceptada, Rechazada, Cancelada despues de estar inscrito'
                 },
                 enrollmentDate: {
@@ -203,7 +203,7 @@ const projects = [
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'pedroramirez@gmail.com'})._id,
-    "state": "Inactivo",
+    "state": "INACTIVO",
     "phase": null,
     "progress":[
         {   "_id": ObjectId(),
@@ -217,7 +217,7 @@ const projects = [
         {
             "_id": ObjectId(),
             "user_id": db.users.findOne({email: 'abcdef@gmail.com'})._id,
-            "state": "Pendiente",
+            "state": "PENDIENTE",
             "enrollmentDate": new Date(),
             "egressDate": null
         }
@@ -233,8 +233,8 @@ const projects = [
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'pedroramirez@gmail.com'})._id,
-    "state": "Activo",
-    "phase": "Iniciado",
+    "state": "ACTIVO",
+    "phase": "INICIADO",
     "progress":[
         {
             "_id": ObjectId(),
@@ -248,7 +248,7 @@ const projects = [
         {
             "_id": ObjectId(),
             "user_id": db.users.findOne({email: 'abcdef@gmail.com'})._id,
-            "state": "Aceptada",
+            "state": "ACEPTADA",
             "enrollmentDate": new Date(),
             "egressDate": null
         }

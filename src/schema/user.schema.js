@@ -9,23 +9,23 @@ const userType = gql`
     lastName: String!
     email: String!
     role: UserRole!
-    state: UserStatus!
+    state: UserState!
   }
 `;
 
 const enums = gql`
   # Enum for role values
   enum UserRole {
-    Administrador
-    Lider
-    Estudiante
+    ADMINISTRADOR
+    LIDER
+    ESTUDIANTE
   }
 
   # Enum for status values
-  enum UserStatus {
-    Pendiente
-    Autorizado
-    No autorizado
+  enum UserState {
+    PENDIENTE
+    AUTORIZADO
+    NOAUTORIZADO
   }
 `;
 

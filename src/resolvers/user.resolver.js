@@ -7,7 +7,6 @@ import { USER_STATE, ROLES } from '../constants/user.constants.js';
 
 // models
 import Users from "../models/users.model.js";
-import Enrollements from '../models/enrollments.model.js';
 
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if(!user) {
@@ -35,6 +34,11 @@ const register = async (parent, args) => {
   return user.save();
 };
 
+const userById = async (parent, args) => {
+  const user = await Users.findOne({ _id: args.id });
+  return user;
+};
+
 const userByEmail = async (parent, args) => {
   const user = await Users.findOne({ email: args.email });
   return user;
@@ -58,16 +62,13 @@ const login = async (parent, args) => {
   return token;
 };
 
-const enrollments = async (parent) => {
-  const enrollments = await Enrollements.find({ user_id: parent._id });
-  return enrollments;
-};
 
 export default {
   userQueries: {
     allUsers,
     user,
     userByEmail,
+    userById,
   },
   userMutations: {
     register,
